@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
   <head>
        <title>My page title</title>
@@ -19,6 +19,7 @@
       
 <script>
     var zombie_map;
+    var old_position;
     var all_markers =[];
     var data = `43.668617917325996 -79.82574384523014 THOUSE.png
                43.668839095578186 -79.82672553372959 BIGT.png
@@ -29,14 +30,24 @@
     var markers = data.split("\n");
           
     function initMap() {
+        
+                  
+    old_position = new google.maps.Marker({
+    position: {lat: 43.667772, lng: -79.826806},
+    icon: "player.png",
+    map: zombie_map
+          });
+        
 
             zombie_map = new google.maps.Map(document.getElementById("zombie_map"), {
             zoom: 16,
             center: {lat: 43.667772, lng: -79.826806}
+    
+});
+        
                 
             
-        });
-        
+      
         if(navigator.geolocation) {
     navigator.geolocation.watchPosition(set_my_position);
 }
@@ -64,12 +75,16 @@ for(var i=0; i < markers.length; i++){
 
 }
     function set_my_position(position){
+    old_position.setMap(null);
     var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     var marker = new google.maps.Marker({
     position: pos,
     icon: "player.png",
     map: zombie_map
         });
+        
+old_position = marker; 
+
   
   }        
           
