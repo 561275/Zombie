@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+       <title>My page title</title>
+      <style>
+#zombie_map {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;  
+    background-color: grey;
+}
+</style>
+  </head>
+  <body>
+      My zombie map
+<div id="zombie_map"></div>
+      
+<script>
+    var zombie_map;
+    var all_markers =[];
+    var data = `43.668617917325996 -79.82574384523014 THOUSE.png
+               43.668839095578186 -79.82672553372959 BIGT.png
+               43.668194960153215 -79.82519131017307 CBrown.png
+               43.66803586539941 -79.82729952645877 scar.png
+               43.66756633939905 -79.82610326123813 scar.png
+               43.66801646357131 -79.82634466004947 slurp.png`;
+    var markers = data.split("\n");
+          
+    function initMap() {
+
+            zombie_map = new google.maps.Map(document.getElementById("zombie_map"), {
+            zoom: 16,
+            center: {lat: 43.667772, lng: -79.826806}
+                
+            
+        });
+        
+        if(navigator.geolocation) {
+    navigator.geolocation.watchPosition(set_my_position);
+}
+else {
+    alert("Geolocation doesn't work in your browser");
+}
+for(var i=0; i < markers.length; i++){
+    document.write(all_markers[i] + "<br>");  
+    var marker_data = markers[i].trim();
+    marker_data = marker_data.split(" ");
+    var latitude = marker_data[0];
+    var longitude = marker_data[1];
+    var emoji = marker_data[2];
+    var marker_position = new google.maps.LatLng(latitude, longitude);
+    var marker = new google.maps.Marker({
+    position: marker_position,
+    map: zombie_map,
+    icon:marker_data[2]
+    
+});
+    all_markers.push(marker);
+    }
+
+        
+
+}
+    function set_my_position(position){
+    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var marker = new google.maps.Marker({
+    position: pos,
+    icon: "player.png",
+    map: zombie_map
+        });
+  
+  }        
+          
+</script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtgtGVI6JaybYqVzuudzE51SHsU5SlxBM&callback=initMap">
+  </script>
+    Items I want to appear on my page will go here
+  </body>
+</html>
